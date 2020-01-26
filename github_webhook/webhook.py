@@ -27,7 +27,7 @@ class Webhook(object):
         if secret is not None and not isinstance(secret, six.binary_type):
             secret = secret.encode("utf-8")
         self._secret = secret
-        self.app.add_url_rule(rule=endpoint, endpoint=endpoint, view_func=self._postreceive, methods=["POST"])
+        app.add_url_rule(rule=endpoint, endpoint=endpoint, view_func=self._postreceive, methods=["POST"])
 
     def hook(self, event_type="push"):
         """
