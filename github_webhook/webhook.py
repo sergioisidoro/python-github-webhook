@@ -18,16 +18,23 @@ class Webhook(object):
 
     def __init__(self, app=None, endpoint="/postreceive", secret=None):
         self.app = app
+        self.set_secret(secret)
         if app is not None:
             self.init_app(app, endpoint, secret)
 
     def init_app(self, app, endpoint="/postreceive", secret=None):
         self._hooks = collections.defaultdict(list)
         self._logger = logging.getLogger("webhook")
+        if secret is not None:
+            # Do not override the secret if already has been set it the
+            # constructor
+            self.set_secret(secret)
+        app.add_url_rule(rule=endpoint, endpoint=endpoint, view_func=self._postreceive, methods=["POST"])
+
+    def set_secret(self, secret=None):
         if secret is not None and not isinstance(secret, six.binary_type):
             secret = secret.encode("utf-8")
         self._secret = secret
-        app.add_url_rule(rule=endpoint, endpoint=endpoint, view_func=self._postreceive, methods=["POST"])
 
     def hook(self, event_type="push"):
         """
