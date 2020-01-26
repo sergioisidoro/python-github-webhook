@@ -64,20 +64,19 @@ def test_constructor():
         endpoint="/postreceive", rule="/postreceive", view_func=webhook._postreceive, methods=["POST"]
     )
 
+
 def test_init_app_flow():
     # GIVEN
     app = mock.Mock()
 
     # WHEN
     webhook = Webhook()
-
     webhook.init_app(app)
 
     # THEN
     app.add_url_rule.assert_called_once_with(
         endpoint="/postreceive", rule="/postreceive", view_func=webhook._postreceive, methods=["POST"]
     )
-
 
 
 def test_run_push_hook(webhook, handler, push_request):
