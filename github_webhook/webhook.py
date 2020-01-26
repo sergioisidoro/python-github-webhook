@@ -26,8 +26,6 @@ class Webhook(object):
         self._hooks = collections.defaultdict(list)
         self._logger = logging.getLogger("webhook")
         if secret is not None:
-            # Do not override the secret if already has been set it the
-            # constructor
             self.set_secret(secret)
         app.add_url_rule(rule=endpoint, endpoint=endpoint, view_func=self._postreceive, methods=["POST"])
 
